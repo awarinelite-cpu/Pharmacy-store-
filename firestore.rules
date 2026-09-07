@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // This app reads and writes Firestore exclusively through server-side
+    // SvelteKit load functions and form actions using the Firebase Admin SDK,
+    // which bypasses these rules entirely. The client SDK is only used for
+    // Firebase Auth (sign up / log in), never for direct Firestore access.
+    //
+    // These rules therefore deny all direct client access as a safety net —
+    // if a bug ever causes the client SDK to be used for Firestore, it fails
+    // closed instead of exposing data.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+	"indexes": [
+		{
+			"collectionGroup": "products",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "vendorId", "order": "ASCENDING" },
+				{ "fieldPath": "updatedAt", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "products",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "active", "order": "ASCENDING" },
+				{ "fieldPath": "stockQty", "order": "ASCENDING" },
+				{ "fieldPath": "updatedAt", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "orders",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "vendorId", "order": "ASCENDING" },
+				{ "fieldPath": "createdAt", "order": "DESCENDING" }
+			]
+		},
+		{
+			"collectionGroup": "orders",
+			"queryScope": "COLLECTION",
+			"fields": [
+				{ "fieldPath": "customerId", "order": "ASCENDING" },
+				{ "fieldPath": "createdAt", "order": "DESCENDING" }
+			]
+		}
+	],
+	"fieldOverrides": []
+}
