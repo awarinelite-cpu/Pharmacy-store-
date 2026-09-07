@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { adminDb } from '$lib/server/firebase-admin';
-import { PAYSTACK_SECRET_KEY } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { RequestHandler } from './$types';
 import type { Product, OrderItem } from '$lib/types';
 
@@ -27,6 +27,12 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		return json({ error: 'Missing payment reference or cart' }, { status: 400 });
 	}
 
+	const paystackSecretKey = env.PAYSTACK_SECRET_KEY;
+	if (!paystackSecretKey) {
+		console.error('PAYSTACK_SECRET_KEY is not set');
+		return json({ error: 'Payments are not configured yet' }, { status: 500 });
+	}
+
 	// Prevent replay: bail if this reference was already used to create orders.
 	const existing = await adminDb
 		.collection('orders')
@@ -39,7 +45,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	// Verify with Paystack directly — never trust the client's claimed amount/status.
 	const verifyRes = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
-		headers: { Authorization: `Bearer ${PAYSTACK_SECRET_KEY}` }
+		headers: { Authorization: `Bearer ${paystackSecretKey}` }
 	});
 	const verifyBody = await verifyRes.json();
 
