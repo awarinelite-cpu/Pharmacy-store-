@@ -22,7 +22,11 @@
 	},
 	"dependencies": {
 		"@sveltejs/adapter-vercel": "^6.3.4",
+		"dotenv": "^17.4.2",
 		"firebase": "^12.18.0",
 		"firebase-admin": "^14.3.0"
+	},
+	"overrides": {
+		"jose": "^4.15.9"
 	}
 }
