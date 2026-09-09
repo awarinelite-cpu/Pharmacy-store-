@@ -2,7 +2,9 @@
 	import { cart } from '$lib/stores/cart';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { PUBLIC_PAYSTACK_PUBLIC_KEY } from '$env/static/public';
+	import { env } from '$env/dynamic/public';
+
+	const PUBLIC_PAYSTACK_PUBLIC_KEY = env.PUBLIC_PAYSTACK_PUBLIC_KEY;
 
 	let address = $state('');
 	let paying = $state(false);
@@ -24,6 +26,10 @@
 
 	async function pay() {
 		error = '';
+		if (!PUBLIC_PAYSTACK_PUBLIC_KEY) {
+			error = 'Payments are not configured yet. Please try again later.';
+			return;
+		}
 		if (!address.trim()) {
 			error = 'Please enter a delivery address.';
 			return;
